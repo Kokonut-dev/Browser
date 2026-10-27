@@ -12,7 +12,7 @@ npm run dev     # full browser chrome at http://localhost:4173
 npm test        # logic test suite
 ```
 
-Desktop (Arch/Hyprland): `makepkg -si` · Desktop (macOS): `./packaging/macos/make-app.sh` · Details: [BUILDING.md](BUILDING.md)
+Desktop (Arch/Hyprland): `makepkg -si` · Desktop (macOS): `./packaging/macos/make-dmg.sh` → `dist/Phantom-0.1.0-universal.dmg` (or grab the **phantom-macos-dmg** artifact from CI) · Details: [BUILDING.md](BUILDING.md)
 
 ## Features
 
@@ -50,7 +50,7 @@ Desktop (Arch/Hyprland): `makepkg -si` · Desktop (macOS): `./packaging/macos/ma
 | `assets/filters/base.txt` | Bundled starter rules (protection works offline on first run) |
 | `docs/RESEARCH.md` | Competitive analysis, Arc deep-dive, threat model, architecture decisions |
 | `ARCHITECTURE.md` · `PRIVACY.md` · `BUILDING.md` | System design · threat model & defenses · build guide |
-| `PKGBUILD` · `packaging/` | Arch package · macOS `.app` builder |
+| `PKGBUILD` · `packaging/` | Arch package · macOS `.dmg` installer builder |
 
 ## License
 

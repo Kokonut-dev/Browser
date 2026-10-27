@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **macOS now ships as a `.dmg` installer**: `packaging/macos/make-dmg.sh` builds a universal Phantom.app (Apple Silicon + Intel), stages it with an /Applications symlink, and produces `dist/Phantom-<version>-universal.dmg` via hdiutil. CI verifies the DMG (`hdiutil verify`), uploads it as the `phantom-macos-dmg` artifact on every run, and attaches it to a GitHub Release on `v*` tags. Also fixed: `make-app.sh` was missing its executable bit.
+
 ## 0.1.0 — 2026-10-27
 
 Initial Phantom: research & architecture record (`docs/RESEARCH.md`), Rust privacy core, native shell (tao + system WebKit), full Arc-paradigm chrome, packaging for Arch/Hyprland and macOS, CI.

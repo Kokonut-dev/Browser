@@ -27,7 +27,7 @@ Legend: ✅ implemented & verified by automated tests in this repo · 🖥 imple
 ## Platform
 
 - 🖥 Arch + Hyprland: WebKitGTK/GTK4 Wayland-native build, PKGBUILD, portal-based file pickers, fractional scaling via GTK
-- 🖥 macOS 12.0+: universal `.app` via `packaging/macos/make-app.sh`, codesign-ready `Info.plist`, native lifecycle via tao/AppKit
+- 🖥 macOS 12.0+: universal `.dmg` installer via `packaging/macos/make-dmg.sh` (drag-to-Applications, hdiutil-verified in CI), codesign-ready `Info.plist`, native lifecycle via tao/AppKit
 - 🖥 HiDPI, clipboard, notifications, dark-mode following, GPU acceleration (WebKit: DMA-BUF/GL on Linux, Metal on macOS) — inherited from the platform WebKit/GTK/AppKit stack Phantom is built on, exercised by CI builds on `ubuntu-24.04` and `macos-14`
 
 ## Performance
