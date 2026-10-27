@@ -38,10 +38,14 @@ jobs:
       - name: Unit tests
         shell: bash
         run: |
+export CARGO_TERM_COLOR=never
           set -o pipefail
-          cargo test -p phantom-core 2>&1 | tee /tmp/build.log || { tail -n 80 /tmp/build.log | while IFS= read -r line; do echo "::error::${line//%/%25}"; done; exit 1; }
-      - name: Clippy (deny warnings)
-        run: cargo clippy -p phantom-core -- -D warnings
+          cargo test -p phantom-core 2>&1 | tee /tmp/build.log || { grep -E 'error(\[|:)|-->|^warning' /tmp/build.log | head -9 | while IFS= read -r line; do echo "::error::${line//%/%25}"; done; tail -n 30 /tmp/build.log; exit 1; }
+shell: bash
+        run: |
+          export CARGO_TERM_COLOR=never
+          set -o pipefail
+          cargo clippy -p phantom-core -- -D warnings 2>&1 | tee /tmp/build.log || { grep -E 'error(\[|:)|-->|^warning' /tmp/build.log | head -9 | while IFS= read -r line; do echo "::error::${line//%/%25}"; done; tail -n 30 /tmp/build.log; exit 1; }
 
   build-linux:
     name: Build (Linux / WebKitGTK)
@@ -58,8 +62,9 @@ jobs:
       - name: Build shell
         shell: bash
         run: |
+export CARGO_TERM_COLOR=never
           set -o pipefail
-          cargo build --release -p phantom-app 2>&1 | tee /tmp/build.log || { tail -n 80 /tmp/build.log | while IFS= read -r line; do echo "::error::${line//%/%25}"; done; exit 1; }
+          cargo build --release -p phantom-app 2>&1 | tee /tmp/build.log || { grep -E 'error(\[|:)|-->|^warning' /tmp/build.log | head -9 | while IFS= read -r line; do echo "::error::${line//%/%25}"; done; tail -n 30 /tmp/build.log; exit 1; }
       - uses: actions/upload-artifact@v4
         with:
           name: phantom-linux
@@ -77,8 +82,9 @@ jobs:
       - name: Build universal .dmg (Apple Silicon + Intel)
         shell: bash
         run: |
+export CARGO_TERM_COLOR=never
           set -o pipefail
-          ./packaging/macos/make-dmg.sh universal 2>&1 | tee /tmp/build.log || { tail -n 80 /tmp/build.log | while IFS= read -r line; do echo "::error::${line//%/%25}"; done; exit 1; }
+          ./packaging/macos/make-dmg.sh universal 2>&1 | tee /tmp/build.log || { grep -E 'error(\[|:)|-->|^warning' /tmp/build.log | head -9 | while IFS= read -r line; do echo "::error::${line//%/%25}"; done; tail -n 30 /tmp/build.log; exit 1; }
       - name: Verify DMG
         run: |
           ls -lh dist/*.dmg
