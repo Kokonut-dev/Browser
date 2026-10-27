@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phantom</title>
+<style>
+/* __PHANTOM_CSS__ */
+</style>
+</head>
+<body>
+<div id="app" class="theme-dark sidebar-left">
+  <aside id="sidebar" aria-label="Tabs and Spaces">
+    <div class="side-head">
+      <div class="wordmark" title="Phantom — zero telemetry, ever">
+        <span class="wordmark-glyph">◐</span><span class="wordmark-text">phantom</span>
+      </div>
+      <div class="side-head-actions">
+        <button id="btn-little" class="icon-btn" title="Little Phantom (quick window)">⧉</button>
+        <button id="btn-newtab" class="icon-btn" title="New Tab / Command Bar">+</button>
+      </div>
+    </div>
+
+    <div class="urlbar" id="urlbar">
+      <button id="btn-back" class="icon-btn sm" title="Back (Alt+←)">‹</button>
+      <button id="btn-forward" class="icon-btn sm" title="Forward (Alt+→)">›</button>
+      <button id="btn-reload" class="icon-btn sm" title="Reload">⟳</button>
+      <div class="url-pill" id="url-pill" title="Click to edit — or press the command shortcut">
+        <span id="url-lock" class="url-lock">🔒</span>
+        <span id="url-text" class="url-text">phantom://newtab</span>
+        <button id="btn-shields" class="shields-badge" title="Phantom Shields">
+          <span class="shield-ico">⛨</span><span id="shields-count">0</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="side-scroll" id="side-scroll">
+      <div id="favorites" class="favorites" aria-label="Favorites"></div>
+      <div class="zone-label" id="pinned-label"><span>Pinned</span></div>
+      <div id="pinned-list" class="tab-list"></div>
+      <div class="zone-label">
+        <span>Today</span>
+        <span class="zone-hint" id="today-hint">auto-archives</span>
+      </div>
+      <div id="today-list" class="tab-list"></div>
+      <button id="btn-add-today" class="add-tab-row">+ New Tab</button>
+    </div>
+
+    <div class="side-foot">
+      <div id="spaces-strip" class="spaces-strip" aria-label="Spaces"></div>
+      <div class="side-foot-actions">
+        <button id="btn-archive" class="icon-btn" title="Archived tabs">🗄</button>
+        <button id="btn-settings" class="icon-btn" title="Settings">⚙</button>
+      </div>
+    </div>
+  </aside>
+  <div id="sidebar-edge" title="Show sidebar"></div>
+
+  <main id="stage">
+    <div id="panes"></div>
+    <div id="find-bar" hidden>
+      <input id="find-input" type="text" placeholder="Find in page…" autocomplete="off">
+      <span id="find-count"></span>
+      <button id="find-close" class="icon-btn sm">✕</button>
+    </div>
+  </main>
+
+  <!-- Command bar -->
+  <div id="command-overlay" class="overlay" hidden>
+    <div id="command-bar" role="dialog" aria-label="Command bar">
+      <div class="cb-input-row">
+        <span class="cb-glyph">⌘</span>
+        <input id="cb-input" type="text" placeholder="Search tabs, history, or type a URL…" autocomplete="off" spellcheck="false">
+        <kbd>esc</kbd>
+      </div>
+      <div id="cb-results"></div>
+      <div class="cb-foot">
+        <span><kbd>↵</kbd> open</span><span><kbd>⌘↵</kbd> new tab</span>
+        <span><kbd>⇧↵</kbd> Little Phantom</span><span><kbd>↑↓</kbd> navigate</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shields popover -->
+  <div id="shields-popover" class="popover" hidden></div>
+  <!-- Archive popover -->
+  <div id="archive-popover" class="popover" hidden></div>
+  <!-- Context menu -->
+  <div id="context-menu" class="context-menu" hidden></div>
+  <!-- Tab hover preview -->
+  <div id="tab-preview" hidden></div>
+  <!-- Little Phantom windows (standalone mode) -->
+  <div id="little-layer"></div>
+
+  <!-- First-run: DNS choice (no hardcoded resolver) -->
+  <div id="firstrun-overlay" class="overlay" hidden>
+    <div class="firstrun-card" role="dialog" aria-label="Welcome to Phantom">
+      <div class="firstrun-mark">◐</div>
+      <h1>Welcome to Phantom</h1>
+      <p class="firstrun-sub">A browser that keeps your business your business.
+      No accounts. No telemetry. No phoning home — Phantom makes <em>zero</em>
+      network connections until you navigate somewhere.</p>
+      <h2>One choice before you browse: DNS</h2>
+      <p>Phantom refuses to silently pick a DNS provider for you. Choose now
+      (change anytime in Settings):</p>
+      <div class="doh-options">
+        <button class="doh-option" data-doh="">
+          <strong>System resolver</strong>
+          <span>Whatever your OS/network already uses. No new third party.</span>
+        </button>
+        <button class="doh-option" data-doh="https://dns.quad9.net/dns-query">
+          <strong>Quad9 (DoH)</strong>
+          <span>Non-profit, privacy-respecting, malware-filtering.</span>
+        </button>
+        <button class="doh-option" data-doh="https://doh.mullvad.net/dns-query">
+          <strong>Mullvad (DoH)</strong>
+          <span>No-logging resolver from the Mullvad VPN folks.</span>
+        </button>
+        <button class="doh-option" data-doh="custom">
+          <strong>Custom…</strong>
+          <span>Your own DoH endpoint (set it in Settings › Privacy).</span>
+        </button>
+      </div>
+      <p class="firstrun-note">History is <strong>off</strong> by default. Today tabs archive themselves.
+      Press <kbd>⌘T</kbd> / <kbd>Ctrl+T</kbd> for the command bar.</p>
+    </div>
+  </div>
+
+  <div id="toasts" aria-live="polite"></div>
+</div>
+<script>
+// __PHANTOM_JS__
+</script>
+</body>
+</html>

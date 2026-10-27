@@ -1,0 +1,71 @@
+name: Phantom CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  ui-tests:
+    name: Chrome logic (Node)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Unit tests (fuzzy, filter engine, policy)
+        run: npm test
+      - name: Boot smoke test
+        run: |
+          npm install --no-save jsdom@25
+          node tools/dev-server.js &
+          sleep 2
+          node tests/smoke.mjs
+
+  core-tests:
+    name: phantom-core (Rust)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Unit tests
+        run: cargo test -p phantom-core
+      - name: Clippy (deny warnings)
+        run: cargo clippy -p phantom-core -- -D warnings
+
+  build-linux:
+    name: Build (Linux / WebKitGTK)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install WebKitGTK + GTK dev packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libsoup-3.0-dev \
+            libjavascriptcoregtk-4.1-dev pkg-config libssl-dev
+      - name: Build shell
+        run: cargo build --release -p phantom-app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phantom-linux
+          Path: |
+            target/release/phantom
+            ui/
+
+  build-macos:
+    name: Build (macOS / WKWebView)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build .app bundle
+        run: ./packaging/macos/make-app.sh native
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phantom-macos
+          Path: dist/Phantom.app

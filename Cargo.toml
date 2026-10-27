@@ -1,0 +1,10 @@
+[workspace]
+resolver = "2"
+members = ["crates/phantom-core", "crates/phantom-app"]
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+strip = "symbols"
+panic = "abort"
+opt-level = 3
