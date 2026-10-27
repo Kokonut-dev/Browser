@@ -10,8 +10,7 @@ const FUZZY = (() => {
   function bonusFor(prev, cur) {
     if (prev === null) return BONUS_BOUNDARY;
     if (!/[A-Za-z0-9]/.test(prev)) return BONUS_BOUNDARY;
-    if (cls(prev) === 1 && cls(cur) === 2) return BONUS_CAMEL;
-    if (cls(prev) !== cls(cur)) return BONUS_CAMEL;
+    if (cls(prev) !== cls(cur)) return BONUS_CAMEL; // incl. lower->Upper camel humps
     return 0;
   }
 

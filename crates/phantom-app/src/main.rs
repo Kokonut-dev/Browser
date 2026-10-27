@@ -315,7 +315,7 @@ fn load_settings(store: &store::Store) -> Settings {
     s
 }
 
-fn chrome_source() -> WebViewBuilder<'static> {
+fn chrome_source(window: &Window) -> WebViewBuilder<'_> {
     // In a packaged build the UI lives next to the binary (ui/); in dev,
     // PHANTOM_UI_DIR or ./ui works. The files are also what the preview serves.
     let dir: PathBuf = std::env::var("PHANTOM_UI_DIR").map(PathBuf::from).unwrap_or_else(|_| {
@@ -334,7 +334,7 @@ fn chrome_source() -> WebViewBuilder<'static> {
         if let Ok(src) = std::fs::read_to_string(dir.join(f)) { js.push_str(&src); js.push('\n'); }
     }
     let html = html.replace("/* __PHANTOM_CSS__ */", &css).replace("// __PHANTOM_JS__", &js);
-    WebViewBuilder::new().with_html(html)
+    WebViewBuilder::new(window).with_html(html)
 }
 
 fn main() {
@@ -353,12 +353,12 @@ fn main() {
     let blocked_hosts_json = serde_json::to_string(&filters.blocked_host_suffixes()).unwrap_or_else(|_| "[]".into());
 
     let p = proxy.clone();
-    let chrome = chrome_source()
+    let chrome = chrome_source(&window)
         .with_ipc_handler(move |req: wry::http::Request<String>| { let _ = p.send_event(UserEvent::ChromeIpc(req.body().clone())); })
-        .build(&window)
+        .build()
         .expect("failed to create chrome webview");
 
-    let mut model = BrowserModel::new(now_unix());
+    let mut model = BrowserModel::new();
     // A URL passed on the command line (xdg-open, .desktop %u, macOS open-url)
     // becomes the first tab. With no argument we open the local new-tab page:
     // nothing is fetched at startup, ever.
@@ -397,11 +397,11 @@ fn main() {
                 {
                     let seed = policy::origin_seed(app.session_key, &url);
                     let shim = policy::fingerprint_shim_js(app.settings.fingerprint, seed);
-                    if let Ok(view) = WebViewBuilder::new()
+                    if let Ok(view) = WebViewBuilder::new(&win)
                         .with_url(&url)
                         .with_initialization_script(&shim)
                         .with_incognito(true)
-                        .build(&win)
+                        .build()
                     {
                         app.little_windows.insert(win.id(), (win, view));
                     }

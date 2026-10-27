@@ -57,7 +57,7 @@ pub enum NavDecision {
 
 fn host_of(url: &str) -> &str {
     let after = url.split("://").nth(1).unwrap_or(url);
-    let end = after.find(|c| c == '/' || c == ':' || c == '?' || c == '#').unwrap_or(after.len());
+    let end = after.find(['/', ':', '?', '#']).unwrap_or(after.len());
     &after[..end]
 }
 
@@ -111,7 +111,7 @@ pub fn apply_https_policy(url: &str, s: &Settings) -> NavDecision {
 pub fn trim_referrer(referrer: &str, target: &str) -> Option<String> {
     let origin = |u: &str| -> Option<String> {
         let (scheme, rest) = u.split_once("://")?;
-        let host = rest.split(|c| c == '/' || c == '?' || c == '#').next()?;
+        let host = rest.split(['/', '?', '#']).next()?;
         Some(format!("{scheme}://{host}/"))
     };
     let (r_origin, t_origin) = (origin(referrer)?, origin(target)?);

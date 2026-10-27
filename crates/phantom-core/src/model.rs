@@ -50,8 +50,7 @@ pub struct BrowserModel {
 }
 
 impl BrowserModel {
-    pub fn new(now: u64) -> BrowserModel {
-        let _ = now;
+    pub fn new() -> BrowserModel {
         let mut m = BrowserModel { next_id: 2, active_space: 1, ..Default::default() };
         m.spaces.push(Space { id: 1, name: "Personal".into(), icon: "◐".into(), hue: 262, tabs: Vec::new() });
         m
@@ -187,7 +186,7 @@ mod tests {
 
     #[test]
     fn zones_stay_contiguous() {
-        let mut m = BrowserModel::new(0);
+        let mut m = BrowserModel::new();
         let s = m.active_space;
         let t1 = m.open_tab(s, "https://a.test", Zone::Today, 0, false);
         let f1 = m.open_tab(s, "https://fav.test", Zone::Favorite, 0, false);
@@ -200,7 +199,7 @@ mod tests {
 
     #[test]
     fn close_archives_and_restore_round_trips() {
-        let mut m = BrowserModel::new(0);
+        let mut m = BrowserModel::new();
         let s = m.active_space;
         let t = m.open_tab(s, "https://a.test/page", Zone::Today, 10, true);
         m.tabs.get_mut(&t).unwrap().title = "A page".into();
@@ -213,7 +212,7 @@ mod tests {
 
     #[test]
     fn sweep_archives_only_idle_today_tabs() {
-        let mut m = BrowserModel::new(0);
+        let mut m = BrowserModel::new();
         let s = m.active_space;
         m.open_tab(s, "https://old.test", Zone::Today, 0, false);
         m.open_tab(s, "https://pin.test", Zone::Pinned, 0, false);
@@ -226,7 +225,7 @@ mod tests {
 
     #[test]
     fn split_caps_at_four_and_never_empties() {
-        let mut m = BrowserModel::new(0);
+        let mut m = BrowserModel::new();
         let s = m.active_space;
         let ids: Vec<TabId> = (0..6).map(|i| m.open_tab(s, &format!("https://t{i}.test"), Zone::Today, 0, i == 0)).collect();
         for id in &ids { m.toggle_split(*id); }
@@ -239,7 +238,7 @@ mod tests {
 
     #[test]
     fn move_between_spaces() {
-        let mut m = BrowserModel::new(0);
+        let mut m = BrowserModel::new();
         let s1 = m.active_space;
         let s2 = m.add_space("Work", 210);
         let t = m.open_tab(s1, "https://a.test", Zone::Today, 0, false);

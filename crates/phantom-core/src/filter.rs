@@ -160,7 +160,7 @@ fn parse_network_rule(line: &str) -> Option<Rule> {
 
 fn host_of(url: &str) -> &str {
     let after = url.split("://").nth(1).unwrap_or(url);
-    let end = after.find(|c| c == '/' || c == ':' || c == '?' || c == '#').unwrap_or(after.len());
+    let end = after.find(['/', ':', '?', '#']).unwrap_or(after.len());
     &after[..end]
 }
 
@@ -214,7 +214,7 @@ fn pattern_matches(pattern: &str, url: &str) -> bool {
                 let host_start = i + 3;
                 let mut v = vec![host_start];
                 // Subdomain boundary starts: every '.' inside the host part.
-                let host_end = url_l[host_start..].find(|c| c == '/' || c == ':' || c == '?').map(|e| host_start + e).unwrap_or(url_l.len());
+                let host_end = url_l[host_start..].find(['/', ':', '?']).map(|e| host_start + e).unwrap_or(url_l.len());
                 for (off, c) in url_l[host_start..host_end].char_indices() {
                     if c == '.' { v.push(host_start + off + 1); }
                 }
@@ -257,10 +257,7 @@ fn match_segment(seg: &str, url: &str, from: usize, anchored: bool) -> Option<us
         if i == 0 && anchored {
             if url[pos..].starts_with(part) { pos += part.len(); } else { return None; }
         } else {
-            match url[pos..].find(part) {
-                Some(off) => pos += off + part.len(),
-                None => return None,
-            }
+            pos += url[pos..].find(part)? + part.len();
         }
     }
     Some(pos)

@@ -25,8 +25,7 @@ fn bonus_for(prev: Option<char>, cur: char) -> i32 {
         None => BONUS_BOUNDARY,
         Some(p) => {
             if !p.is_alphanumeric() { BONUS_BOUNDARY }
-            else if char_class(p) == 1 && char_class(cur) == 2 { BONUS_CAMEL }
-            else if char_class(p) != char_class(cur) { BONUS_CAMEL }
+            else if char_class(p) != char_class(cur) { BONUS_CAMEL } // incl. lower->Upper camel humps
             else { 0 }
         }
     }
