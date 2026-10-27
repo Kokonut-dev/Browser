@@ -67,13 +67,14 @@ pub fn fuzzy_match(pattern: &str, text: &str) -> Option<FuzzyHit> {
             } else {
                 let mut best_prev = neg;
                 let mut best_k = usize::MAX;
-                for k in 0..i {
-                    if h[k][j - 1] == neg { continue; }
+                for (k, prev_row) in h.iter().enumerate().take(i) {
+                    let prev = prev_row[j - 1];
+                    if prev == neg { continue; }
                     let gap = (i - k - 1) as i32;
                     let cand = if gap == 0 {
-                        h[k][j - 1] + SCORE_MATCH + b.max(BONUS_CONSECUTIVE)
+                        prev + SCORE_MATCH + b.max(BONUS_CONSECUTIVE)
                     } else {
-                        h[k][j - 1] + SCORE_MATCH + b + SCORE_GAP_START + SCORE_GAP_EXT * (gap - 1)
+                        prev + SCORE_MATCH + b + SCORE_GAP_START + SCORE_GAP_EXT * (gap - 1)
                     };
                     if cand > best_prev { best_prev = cand; best_k = k; }
                 }
