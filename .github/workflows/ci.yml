@@ -63,7 +63,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: phantom-linux
-          Path: |
+          path: |
             target/release/phantom
             ui/
 
@@ -86,7 +86,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: phantom-macos-dmg
-          Path: dist/*.dmg
+          path: dist/*.dmg
           if-no-files-found: error
 
   release:
@@ -100,7 +100,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: phantom-macos-dmg
-          Path: release-assets
+          path: release-assets
       - uses: softprops/action-gh-release@v2
         with:
           files: release-assets/*.dmg

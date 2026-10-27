@@ -7,10 +7,10 @@ description = "Phantom browser shell: tao windows + system WebKit (WebKitGTK / W
 
 [[bin]]
 name = "phantom"
-Path = "src/main.rs"
+path = "src/main.rs"
 
 [dependencies]
-phantom-core = { Path = "../phantom-core" }
+phantom-core = { path = "../phantom-core" }
 tao = "0.29"
 wry = "0.45"
 serde = { version = "1", features = ["derive"] }

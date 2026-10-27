@@ -3,7 +3,7 @@
 // explicitly enabled history in settings.
 
 use rusqlite::{params, Connection};
-use std::Path::PathBuf;
+use std::path::PathBuf;
 
 pub struct Store {
     db: Connection,

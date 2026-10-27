@@ -11,7 +11,7 @@ use phantom_core::model::{BrowserModel, TabId, Zone};
 use phantom_core::policy::{self, NavDecision, Settings};
 use serde_json::{json, Value};
 use std::collections::HashMap;
-use std::Path::PathBuf;
+use std::path::PathBuf;
 use std::time::{SystemTime, UNIX_EPOCH};
 use tao::dpi::{LogicalPosition, LogicalSize};
 use tao::event::{Event, WindowEvent};
