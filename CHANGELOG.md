@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **CI is fully green** (Node suite, phantom-core tests + clippy `-D warnings`, Linux/WebKitGTK build, macOS universal DMG). Fixes on the way there: lowercase `Path` keys in `phantom-app/Cargo.toml` (a capital `Path` made cargo ignore the bin Path and fail workspace-wide), `std::Path` → `std::Path`, wry 0.45 builder API (`WebViewBuilder::new(window)` / `build()`), and a round of clippy lints in the core (`if_same_then_else`, `[char]` find/split patterns, `match` → `?`, range-loop over DP rows).
 - **macOS now ships as a `.dmg` installer**: `packaging/macos/make-dmg.sh` builds a universal Phantom.app (Apple Silicon + Intel), stages it with an /Applications symlink, and produces `dist/Phantom-<version>-universal.dmg` via hdiutil. CI verifies the DMG (`hdiutil verify`), uploads it as the `phantom-macos-dmg` artifact on every run, and attaches it to a GitHub Release on `v*` tags. Also fixed: `make-app.sh` was missing its executable bit.
 
 ## 0.1.0 — 2026-10-27
