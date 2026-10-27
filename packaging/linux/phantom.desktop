@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Phantom
+GenericName=Web Browser
+Comment=Privacy-first browser — zero telemetry, Spaces, split view
+Exec=env PHANTOM_UI_DIR=/usr/share/phantom/ui phantom %u
+Icon=phantom
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
+MimeType=text/html;x-scheme-handler/http;x-scheme-handler/https;
+StartupWMClass=phantom
+Keywords=browser;privacy;wayland;hyprland;

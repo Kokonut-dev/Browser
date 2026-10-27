@@ -1,0 +1,11 @@
+{
+  "name": "phantom-browser",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Phantom — privacy-first browser. This package.json exists only for the UI test suite and dev server; the browser itself is Rust (see Cargo.toml).",
+  "scripts": {
+    "dev": "node tools/dev-server.js",
+    "test": "node --test tests/ui.test.js"
+  },
+  "license": "MPL-2.0"
+}
