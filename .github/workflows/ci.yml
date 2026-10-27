@@ -38,10 +38,11 @@ jobs:
       - name: Unit tests
         shell: bash
         run: |
-export CARGO_TERM_COLOR=never
+          export CARGO_TERM_COLOR=never
           set -o pipefail
           cargo test -p phantom-core 2>&1 | tee /tmp/build.log || { grep -E 'error(\[|:)|-->|^warning' /tmp/build.log | head -9 | while IFS= read -r line; do echo "::error::${line//%/%25}"; done; tail -n 30 /tmp/build.log; exit 1; }
-shell: bash
+      - name: Clippy (deny warnings)
+        shell: bash
         run: |
           export CARGO_TERM_COLOR=never
           set -o pipefail
@@ -62,7 +63,7 @@ shell: bash
       - name: Build shell
         shell: bash
         run: |
-export CARGO_TERM_COLOR=never
+          export CARGO_TERM_COLOR=never
           set -o pipefail
           cargo build --release -p phantom-app 2>&1 | tee /tmp/build.log || { grep -E 'error(\[|:)|-->|^warning' /tmp/build.log | head -9 | while IFS= read -r line; do echo "::error::${line//%/%25}"; done; tail -n 30 /tmp/build.log; exit 1; }
       - uses: actions/upload-artifact@v4
@@ -82,7 +83,7 @@ export CARGO_TERM_COLOR=never
       - name: Build universal .dmg (Apple Silicon + Intel)
         shell: bash
         run: |
-export CARGO_TERM_COLOR=never
+          export CARGO_TERM_COLOR=never
           set -o pipefail
           ./packaging/macos/make-dmg.sh universal 2>&1 | tee /tmp/build.log || { grep -E 'error(\[|:)|-->|^warning' /tmp/build.log | head -9 | while IFS= read -r line; do echo "::error::${line//%/%25}"; done; tail -n 30 /tmp/build.log; exit 1; }
       - name: Verify DMG
